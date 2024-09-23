@@ -23,7 +23,7 @@ public class AlunoService {
     public DadosDetalhamentoAluno insert(DadosCadastroAluno cadastroAluno){
         var aluno = new Aluno(cadastroAluno);
         aluno.setStatus(Status.MATRICULADO);
-        alunoRepository.save(aluno);
+        aluno = alunoRepository.save(aluno);
         return new DadosDetalhamentoAluno(aluno);
     }
 

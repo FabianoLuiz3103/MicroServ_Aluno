@@ -1,5 +1,6 @@
 package br.com.fiap.ms_aluno.dto;
 
+import br.com.fiap.ms_aluno.model.Aluno;
 import br.com.fiap.ms_aluno.model.Status;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -24,4 +25,14 @@ public record DadosCadastroAluno(
         @NotBlank(message = "A turma é obrgatório! ")
         String turma
 ) {
+
+        public DadosCadastroAluno(Aluno aluno){
+                this(
+                        aluno.getNome(),
+                        aluno.getEmail(),
+                        aluno.getPassword(),
+                        aluno.getRm(),
+                        aluno.getTurma()
+                );
+        }
 }
