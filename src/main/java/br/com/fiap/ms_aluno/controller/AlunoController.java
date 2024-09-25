@@ -4,9 +4,11 @@ import br.com.fiap.ms_aluno.dto.DadosAtualizacaoAluno;
 import br.com.fiap.ms_aluno.dto.DadosCadastroAluno;
 import br.com.fiap.ms_aluno.dto.DadosDetalhamentoAluno;
 import br.com.fiap.ms_aluno.service.AlunoService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -35,21 +37,37 @@ public class AlunoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosDetalhamentoAluno> findById(@PathVariable Long id){
-        var alunoDTO = alunoService.findById(id);
-        return ResponseEntity.ok(alunoDTO);
+    public ResponseEntity<DadosDetalhamentoAluno> findById(@PathVariable Long id) {
+        try {
+            var alunoDTO = alunoService.findById(id);
+            return ResponseEntity.ok(alunoDTO);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoAluno> update(@PathVariable Long id,
             @RequestBody @Valid DadosAtualizacaoAluno atualizacaoAluno){
-        var alunoDTO = alunoService.updade(id, atualizacaoAluno);
-        return ResponseEntity.ok(alunoDTO);
+        try{
+            var alunoDTO = alunoService.updade(id, atualizacaoAluno);
+            return ResponseEntity.ok(alunoDTO);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-        alunoService.delete(id);
-        return ResponseEntity.noContent().build();
+        try {
+            alunoService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);  // ou outro status se for mais apropriado
+        }
     }
+
 }

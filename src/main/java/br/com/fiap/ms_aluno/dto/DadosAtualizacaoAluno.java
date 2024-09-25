@@ -4,6 +4,7 @@ import br.com.fiap.ms_aluno.model.Aluno;
 import br.com.fiap.ms_aluno.model.Status;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record DadosAtualizacaoAluno(
@@ -22,7 +23,7 @@ public record DadosAtualizacaoAluno(
         @Size(min = 5, max = 5)
         String rm,
 
-        @NotBlank(message = "O status é obrigatório")
+        @NotNull(message = "O status é obrigatório")
         Status status,
 
         @NotBlank(message = "A turma é obrgatório! ")

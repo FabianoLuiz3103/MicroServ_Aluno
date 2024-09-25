@@ -48,7 +48,7 @@ public class AlunoService {
         try {
             var aluno = alunoRepository.getReferenceById(id);
             aluno.update(atualizacaoAluno);
-            alunoRepository.save(aluno);
+            aluno = alunoRepository.save(aluno);
             return new DadosDetalhamentoAluno(aluno);
         } catch (EntityNotFoundException e){
             throw new EntityNotFoundException("Aluno não encontrado com id: " + id);
